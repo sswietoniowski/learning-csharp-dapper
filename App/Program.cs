@@ -24,6 +24,7 @@ namespace App
             Category_Add_ShouldReturnProperId();
             Category_Get_ShouldReturnProperObject();
             Category_Modify_ShouldChangeObject();
+            Category_Remove_ShouldRemoveObject();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -59,7 +60,7 @@ namespace App
         private static void Category_Get_ShouldReturnProperObject()
         {
             var repository = CreateRepository();
-            int id = 1;
+            int id = repository.GetAll().Max(c => c.Id);
             var category = repository.Get(id);
             if (category.Id == id)
             {
@@ -93,6 +94,20 @@ namespace App
             }
         }
 
+        private static void Category_Remove_ShouldRemoveObject()
+        {
+            var repository = CreateRepository();
+            var id = repository.GetAll().Max(c => c.Id);
+            repository.Remove(id);
+            if (repository.Get(id) == null)
+            {
+                Console.WriteLine("Kategoria została usunięta");
+            }
+            else
+            {
+                Console.WriteLine("Nie udało się usunąć kategorii");
+            }
+        }
 
         private static ICategoryRepository CreateRepository()
         {

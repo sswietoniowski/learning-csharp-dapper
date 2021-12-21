@@ -40,7 +40,7 @@ SELECT SCOPE_IDENTITY();
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            _db.Execute("DELETE FROM dbo.Categories WHERE Id = @Id", new { Id = id });
         }
 
         public Category Modify(Category category)
