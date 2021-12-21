@@ -26,7 +26,7 @@ namespace DataAccess
 
         public List<Category> GetAll()
         {
-            return _db.Query<Category>("SELECT Id, Name, Description AS Info FROM dbo.Categories").ToList();
+            return _db.Query<Category>("SELECT Id, Name, Description FROM dbo.Categories").ToList();
         }
 
         public void Remove(int id)
