@@ -1,26 +1,39 @@
-﻿using DataAccess;
+﻿using App;
+using DataAccess;
 using Domain;
 using Microsoft.Extensions.Configuration;
 
-public class Program
+namespace App
 {
-    private static IConfigurationRoot config;
-
-    private static void Initialize()
+    public class Program
     {
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-        config = builder.Build();
-    }
+        private static IConfigurationRoot config;
 
-    public static void Main(string[] args)
-    {
-        // TODO: dodać przykłady wywołania Dapper-a
-    }
+        private static void Initialize()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            config = builder.Build();
+        }
 
-    private static ICategoryRepository CreateRepository()
-    {
-        return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
+        public static void Main(string[] args)
+        {
+            Initialize();
+            Category_GetAll_ShouldReturnSomeObjects();
+        }
+
+        private static void Category_GetAll_ShouldReturnSomeObjects()
+        {
+            var repository = CreateRepository();
+            var categories = repository.GetAll();
+            Console.WriteLine($"Count: {categories.Count}");
+            categories.Output();
+        }
+
+        private static ICategoryRepository CreateRepository()
+        {
+            return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
+        }
     }
 }

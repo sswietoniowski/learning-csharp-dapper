@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Dapper;
+using Domain;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -25,7 +26,7 @@ namespace DataAccess
 
         public List<Category> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.Query<Category>("SELECT Id, Name, Description FROM dbo.Categories").ToList();
         }
 
         public void Remove(int id)
