@@ -21,6 +21,7 @@ namespace App
         {
             Initialize();
             Category_GetAll_ShouldReturnSomeObjects();
+            Category_Add_ShouldReturnProperId();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -29,6 +30,28 @@ namespace App
             var categories = repository.GetAll();
             Console.WriteLine($"Count: {categories.Count}");
             categories.Output();
+        }
+
+        private static void Category_Add_ShouldReturnProperId()
+        {
+            var repository = CreateRepository();
+            var category = new Category { Name = "Komputery", Description = "Ciężko teraz żyć bez nich" };
+
+            if (repository.GetAll().Where(c => c.Name == category.Name).Any())
+            {
+                Console.WriteLine("Kategoria o takiej nazwie już istnieje...");
+                return;
+            }
+
+            repository.Add(category);
+            if (!category.IsNew)
+            {
+                category.Output();
+            }
+            else
+            {
+                Console.WriteLine("Coś poszło nie tak, nie udało się dodać kategorii!");
+            }
         }
 
         private static ICategoryRepository CreateRepository()

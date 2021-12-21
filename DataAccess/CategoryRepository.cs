@@ -16,7 +16,16 @@ namespace DataAccess
 
         public Category Add(Category category)
         {
-            throw new NotImplementedException();
+            var insertCategorySql =
+@"
+INSERT INTO dbo.Categories (Name, Description)
+VALUES (@Name, @Description);
+
+SELECT SCOPE_IDENTITY();
+";
+            var id = _db.Query<int>(insertCategorySql, category).Single();
+            category.Id = id;
+            return category;
         }
 
         public Category Get(int id)
