@@ -22,6 +22,7 @@ namespace App
             Initialize();
             Category_GetAll_ShouldReturnSomeObjects();
             Category_Add_ShouldReturnProperId();
+            Category_Get_ShouldReturnProperObject();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -51,6 +52,21 @@ namespace App
             else
             {
                 Console.WriteLine("Coś poszło nie tak, nie udało się dodać kategorii!");
+            }
+        }
+
+        private static void Category_Get_ShouldReturnProperObject()
+        {
+            var repository = CreateRepository();
+            int id = 1;
+            var category = repository.Get(id);
+            if (category.Id == id)
+            {
+                category.Output();
+            }
+            else
+            {
+                Console.WriteLine("Nie udało się pobrać wybranej kategorii!");
             }
         }
 

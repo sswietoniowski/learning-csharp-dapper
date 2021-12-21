@@ -30,7 +30,7 @@ SELECT SCOPE_IDENTITY();
 
         public Category Get(int id)
         {
-            throw new NotImplementedException();
+            return _db.Query<Category>("SELECT Id, Name, Description FROM dbo.Categories WHERE Id = @Id", new { Id = id }).SingleOrDefault();
         }
 
         public List<Category> GetAll()
