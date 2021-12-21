@@ -111,7 +111,8 @@ namespace App
 
         private static ICategoryRepository CreateRepository()
         {
-            return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
+            //return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
+            return new ContribCategoryRepository(config.GetConnectionString("DefaultConnection"));
         }
     }
 }
