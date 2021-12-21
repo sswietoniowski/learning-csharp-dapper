@@ -2,5 +2,10 @@
 {
     public interface ICategoryRepository
     {
+        Category Get(int id);
+        List<Category> GetAll();
+        Category Add(Category category);
+        Category Update(Category category);
+        void Remove(int id);
     }
 }
