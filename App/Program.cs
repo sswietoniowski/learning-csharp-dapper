@@ -23,6 +23,7 @@ namespace App
             Category_GetAll_ShouldReturnSomeObjects();
             Category_Add_ShouldReturnProperId();
             Category_Get_ShouldReturnProperObject();
+            Category_Modify_ShouldChangeObject();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -62,6 +63,7 @@ namespace App
             var category = repository.Get(id);
             if (category.Id == id)
             {
+                Console.WriteLine("Pobrana kategoria: ");
                 category.Output();
             }
             else
@@ -69,6 +71,28 @@ namespace App
                 Console.WriteLine("Nie udało się pobrać wybranej kategorii!");
             }
         }
+
+        private static void Category_Modify_ShouldChangeObject()
+        {
+            var repository = CreateRepository();
+            var id = 1;
+            var category = repository.Get(id);
+            Console.WriteLine("Kategoria przed zmianą: ");
+            category.Description = "ZUPELNIE NOWY OPIS :-)";
+            repository.Modify(category);
+            var categoryAfterChange = repository.Get(id);
+            if (categoryAfterChange.Description == category.Description)
+            {
+                Console.WriteLine("Zmiana została wprowadzona...");
+                Console.WriteLine("Kategoria po zmianie: ");
+                categoryAfterChange.Output();
+            }
+            else
+            {
+                Console.WriteLine("Nie udało się wykonać zmiany");
+            }
+        }
+
 
         private static ICategoryRepository CreateRepository()
         {

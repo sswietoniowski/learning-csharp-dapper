@@ -43,9 +43,21 @@ SELECT SCOPE_IDENTITY();
             throw new NotImplementedException();
         }
 
-        public Category Update(Category category)
+        public Category Modify(Category category)
         {
-            throw new NotImplementedException();
+            var updateCategorySql =
+@"
+UPDATE dbo.Categories
+SET
+    Name = @Name
+    , Description = @Description
+WHERE   
+    Id = @Id;
+";
+
+            _db.Execute(updateCategorySql, category);
+
+            return category;
         }
     }
 }

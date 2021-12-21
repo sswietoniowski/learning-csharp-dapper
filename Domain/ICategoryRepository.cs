@@ -5,7 +5,7 @@
         Category Get(int id);
         List<Category> GetAll();
         Category Add(Category category);
-        Category Update(Category category);
+        Category Modify(Category category);
         void Remove(int id);
     }
 }
