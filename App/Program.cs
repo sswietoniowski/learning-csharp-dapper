@@ -20,14 +20,14 @@ namespace App
         public static void Main(string[] args)
         {
             Initialize();
-            //Category_GetAll_ShouldReturnSomeObjects();
-            //Category_Add_ShouldReturnProperId();
-            //Category_Get_ShouldReturnProperObject();
-            //Category_Modify_ShouldChangeObject();
-            //Category_Remove_ShouldRemoveObject();
-            var repository = CreateRepository();
-            var categoryWithProducts = repository.GetWithProducts(1);
-            categoryWithProducts.Output();
+            Category_GetAll_ShouldReturnSomeObjects();
+            Category_Add_ShouldReturnProperId();
+            Category_Get_ShouldReturnProperObject();
+            Category_Modify_ShouldChangeObject();
+            Category_Remove_ShouldRemoveObject();
+            //var repository = CreateRepository();
+            //var categoryWithProducts = repository.GetWithProducts(1);
+            //categoryWithProducts.Output();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -42,6 +42,13 @@ namespace App
         {
             var repository = CreateRepository();
             var category = new Category { Name = "Komputery", Description = "Ciężko teraz żyć bez nich" };
+            var product = new Product
+            {
+                Name = "Lenovo Legion 7",
+                Price = 9999.99M,
+                Description = "Jeden z najlepszych wyborów"
+            };
+            category.Products.Add(product);
 
             if (repository.GetAll().Where(c => c.Name == category.Name).Any())
             {
@@ -49,7 +56,7 @@ namespace App
                 return;
             }
 
-            repository.Add(category);
+            repository.Save(category);
             if (!category.IsNew)
             {
                 category.Output();
@@ -64,7 +71,7 @@ namespace App
         {
             var repository = CreateRepository();
             int id = repository.GetAll().Max(c => c.Id);
-            var category = repository.Get(id);
+            var category = repository.GetWithProducts(id);
             if (category.Id == id)
             {
                 Console.WriteLine("Pobrana kategoria: ");

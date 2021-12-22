@@ -52,5 +52,10 @@ namespace DataAccess
         {
             _db.Delete<Category>(new Category { Id = id });
         }
+
+        public void Save(Category category)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

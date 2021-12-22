@@ -2,6 +2,7 @@
 using Domain;
 using System.Data;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace DataAccess
 {
@@ -26,6 +27,28 @@ SELECT SCOPE_IDENTITY();
             var id = _db.Query<int>(insertCategorySql, category).Single();
             category.Id = id;
             return category;
+        }
+
+        public Product Add(Product product)
+        {
+            var insertProductSql =
+@"
+INSERT INTO dbo.Products (Name, Price, Description, CategoryId)
+VALUES (@Name, @Price, @Description, @CategoryId);
+
+SELECT SCOPE_IDENTITY();
+";
+
+            var id = _db.Query<int>(insertProductSql, 
+                new 
+                {
+                    Name = product.Name,
+                    Price = product.Price,
+                    Description = product.Description,
+                    CategoryId = product.Category.Id
+                }).Single();
+            product.Id = id;
+            return product;                
         }
 
         public Category Get(int id)
@@ -60,6 +83,30 @@ WHERE
             return category;
         }
 
+        public Product Modify(Product product)
+        {
+            var updateProductSql =
+@"
+UPDATE dbo.Product
+SET
+    Name = @Name
+    , Price = @Price
+    , Description = @Description
+    , CategoryId = @CategoryId;
+";
+
+            _db.Execute(updateProductSql, new
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CategoryId = product.Category.Id
+            });
+
+            return product;
+        }
+
         public Category GetWithProducts(int id)
         {
             var selectCategoryWithProducts =
@@ -78,6 +125,54 @@ SELECT Id, Name, Price, Description, CategoryId FROM dbo.Products WHERE Category
                 }
 
                 return category;
+            }
+        }
+
+        public void Save(Category category)
+        {
+            // todo: handle IsDeleted for Products
+            if (category != null)
+            {
+                using (var txScope = new TransactionScope())
+                {
+
+                    if (category.IsNew)
+                    {
+                        Add(category);
+
+                        if (category.Products != null)
+                        {
+                            foreach (var product in category.Products)
+                            {
+                                product.Category = category;
+                                Add(product);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Modify(category);
+
+                        if (category.Products != null)
+                        {
+                            foreach (var product in category.Products)
+                            {
+                                product.Category = category;
+                                if (product != null)
+                                {
+                                    if (product.IsNew)
+                                    {
+                                        Add(product);
+                                    }
+                                    else
+                                    {
+                                        Modify(product);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
