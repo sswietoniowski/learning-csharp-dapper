@@ -5,5 +5,5 @@
 	Price money not null,
 	Description varchar(max) null,
 	Thumbnail varbinary(max) null,
-	CategoryId int not null constraint FK_Products_Categories foreign key references Categories (Id) on update cascade on delete no action
+	CategoryId int not null constraint FK_Products_Categories foreign key references Categories (Id) on update cascade on delete cascade
 );

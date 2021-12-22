@@ -172,6 +172,8 @@ SELECT Id, Name, Price, Description, CategoryId FROM dbo.Products WHERE Category
                             }
                         }
                     }
+
+                    txScope.Complete();
                 }
             }
         }
