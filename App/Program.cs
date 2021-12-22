@@ -20,11 +20,14 @@ namespace App
         public static void Main(string[] args)
         {
             Initialize();
-            Category_GetAll_ShouldReturnSomeObjects();
-            Category_Add_ShouldReturnProperId();
-            Category_Get_ShouldReturnProperObject();
-            Category_Modify_ShouldChangeObject();
-            Category_Remove_ShouldRemoveObject();
+            //Category_GetAll_ShouldReturnSomeObjects();
+            //Category_Add_ShouldReturnProperId();
+            //Category_Get_ShouldReturnProperObject();
+            //Category_Modify_ShouldChangeObject();
+            //Category_Remove_ShouldRemoveObject();
+            var repository = CreateRepository();
+            var categoryWithProducts = repository.GetWithProducts(1);
+            categoryWithProducts.Output();
         }
 
         private static void Category_GetAll_ShouldReturnSomeObjects()
@@ -111,8 +114,8 @@ namespace App
 
         private static ICategoryRepository CreateRepository()
         {
-            //return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
-            return new ContribCategoryRepository(config.GetConnectionString("DefaultConnection"));
+            return new CategoryRepository(config.GetConnectionString("DefaultConnection"));
+            //return new ContribCategoryRepository(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

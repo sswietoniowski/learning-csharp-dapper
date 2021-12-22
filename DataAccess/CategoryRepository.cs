@@ -59,5 +59,26 @@ WHERE
 
             return category;
         }
+
+        public Category GetWithProducts(int id)
+        {
+            var selectCategoryWithProducts =
+@"
+SELECT Id, Name, Description FROM dbo.Categories WHERE Id = @Id;
+SELECT Id, Name, Price, Description, CategoryId FROM dbo.Products WHERE CategoryId = @Id;
+";
+
+            using (var multipleResults = _db.QueryMultiple(selectCategoryWithProducts, new { Id = id}))
+            {
+                var category = multipleResults.Read<Category>().SingleOrDefault();
+                var products = multipleResults.Read<Product>().ToList();
+                if (category != null && products != null)
+                {
+                    category.Products.AddRange(products);
+                }
+
+                return category;
+            }
+        }
     }
 }

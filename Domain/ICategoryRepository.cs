@@ -7,5 +7,6 @@
         Category Add(Category category);
         Category Modify(Category category);
         void Remove(int id);
+        Category GetWithProducts(int id);
     }
 }

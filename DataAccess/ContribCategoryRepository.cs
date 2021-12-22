@@ -37,6 +37,11 @@ namespace DataAccess
             return _db.GetAll<Category>().ToList();
         }
 
+        public Category GetWithProducts(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Category Modify(Category category)
         {
             _db.Update(category);
