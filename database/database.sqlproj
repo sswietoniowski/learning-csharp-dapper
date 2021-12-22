@@ -66,11 +66,10 @@
     <Build Include="dbo\Tables\Products.sql" />
     <Build Include="dbo\Stored Procedures\Categories_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\Categories_Add.sql" />
+    <Build Include="dbo\Stored Procedures\Categories_Modify.sql" />
+    <Build Include="dbo\Stored Procedures\Categories_Remove.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment-seed-database.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PreDeploy Include="Script.PreDeployment-drop-all-objects.sql" />
   </ItemGroup>
 </Project>
